@@ -4,6 +4,9 @@ import Image from "next/image";
 import { FormEvent, useEffect, useState } from "react";
 
 const offersEndpoint = "https://maflorestour.times-herders-0eadpj.chatgpt.site/api/offers";
+const whatsappNumber = "5511949780458";
+const whatsappDisplay = "(11) 94978-0458";
+const instagramUrl = "https://www.instagram.com/maflorestour/";
 
 const opportunities = [
   {
@@ -71,7 +74,7 @@ export default function Home() {
   }, [offerOpen]);
 
   function openWhatsapp(message: string) {
-    window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
+    window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
   }
 
   function closeOffers() {
@@ -244,11 +247,62 @@ export default function Home() {
         </div>
       </section>
 
-      <footer>
-        <Image src="/brand/maflores-logo.png" width={2048} height={578} unoptimized alt="Maflores Tour" />
-        <p>Viagens pensadas para você, cuidadas em cada detalhe.</p>
-        <a href="#inicio">Voltar ao topo ↑</a>
-        <small>© 2026 Maflores Tour. Todos os direitos reservados.</small>
+      <footer className="site-footer" id="contato">
+        <div className="footer-main">
+          <div className="footer-brand">
+            <a href="#inicio" aria-label="Maflores Tour — voltar ao início">
+              <Image src="/brand/maflores-logo.png" width={2048} height={578} unoptimized alt="Maflores Tour — Invista em memórias" />
+            </a>
+            <p>Viagens pensadas para você, cuidadas em cada detalhe.</p>
+            <span>Atendimento humano antes, durante e depois da viagem.</span>
+          </div>
+
+          <div className="footer-column">
+            <h3>Explore</h3>
+            <a href="#destinos">Destinos e roteiros</a>
+            <a href="#sobre">Nossa história</a>
+            <a href="#como-funciona">Como funciona</a>
+            <button type="button" onClick={() => { setLeadStatus("idle"); setOfferOpen(true); }}>
+              Receber ofertas
+            </button>
+          </div>
+
+          <div className="footer-column footer-contact">
+            <h3>Fale com a Maflores</h3>
+            <a
+              className="footer-contact-link"
+              href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Olá, Maflores Tour! Quero ajuda para planejar minha próxima viagem.")}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Conversar com a Maflores no WhatsApp ${whatsappDisplay}`}
+            >
+              <span className="footer-icon" aria-hidden="true">W</span>
+              <span><small>WhatsApp comercial</small><strong>{whatsappDisplay}</strong></span>
+            </a>
+            <p>Conte sua ideia, mesmo que ainda não tenha destino ou data definidos.</p>
+          </div>
+
+          <div className="footer-column footer-social">
+            <h3>Acompanhe</h3>
+            <a
+              className="footer-contact-link"
+              href={instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visitar Instagram da Maflores Tour"
+            >
+              <span className="footer-icon" aria-hidden="true">IG</span>
+              <span><small>Instagram</small><strong>@maflorestour</strong></span>
+            </a>
+            <p>Inspirações, oportunidades e novidades para sua próxima viagem.</p>
+          </div>
+        </div>
+
+        <div className="footer-bottom">
+          <small>© 2026 Maflores Tour. Todos os direitos reservados.</small>
+          <span>Invista em memórias.</span>
+          <a href="#inicio">Voltar ao topo <span aria-hidden="true">↑</span></a>
+        </div>
       </footer>
 
       <button
