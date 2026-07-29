@@ -3,6 +3,24 @@
 import Image from "next/image";
 import { FormEvent, useEffect, useState } from "react";
 
+function WhatsAppIcon() {
+  return (
+    <svg viewBox="0 0 24 24" role="img" aria-label="WhatsApp">
+      <path fill="currentColor" d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.66.15-.2.3-.76.97-.93 1.17-.17.2-.34.22-.64.07-.3-.15-1.25-.46-2.38-1.47a8.92 8.92 0 0 1-1.65-2.06c-.17-.3-.02-.46.13-.61.14-.13.3-.34.45-.51.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.66-1.6-.91-2.19-.24-.58-.48-.5-.66-.51h-.56c-.2 0-.51.07-.78.37-.27.3-1.03 1-1.03 2.44s1.05 2.83 1.2 3.03c.15.2 2.07 3.17 5.02 4.44.7.3 1.25.48 1.67.62.7.22 1.34.19 1.85.12.56-.08 1.76-.72 2-1.42.25-.7.25-1.3.18-1.42-.08-.13-.27-.2-.57-.35m-5.42 7.58h-.01a9.84 9.84 0 0 1-5.01-1.37l-.36-.21-3.73.98 1-3.63-.23-.37A9.81 9.81 0 0 1 2.2 12C2.2 6.58 6.61 2.17 12.04 2.17A9.84 9.84 0 0 1 21.87 12c0 5.42-4.41 9.83-9.83 9.83m8.37-18.2A11.75 11.75 0 0 0 12.05.3C5.54.3.25 5.59.25 12.1c0 2.08.54 4.1 1.58 5.87L.15 24.1l6.27-1.64a11.78 11.78 0 0 0 5.62 1.43h.01c6.5 0 11.8-5.29 11.8-11.79 0-3.15-1.22-6.11-3.45-8.34" />
+    </svg>
+  );
+}
+
+function InstagramIcon() {
+  return (
+    <svg viewBox="0 0 24 24" role="img" aria-label="Instagram">
+      <rect x="3" y="3" width="18" height="18" rx="5.3" fill="none" stroke="currentColor" strokeWidth="2.2" />
+      <circle cx="12" cy="12" r="4.15" fill="none" stroke="currentColor" strokeWidth="2.2" />
+      <circle cx="17.45" cy="6.65" r="1.25" fill="currentColor" />
+    </svg>
+  );
+}
+
 const offersEndpoint = "https://maflorestour.times-herders-0eadpj.chatgpt.site/api/offers";
 const whatsappNumber = "5511949780458";
 const whatsappDisplay = "(11) 94978-0458";
@@ -276,7 +294,7 @@ export default function Home() {
               rel="noopener noreferrer"
               aria-label={`Conversar com a Maflores no WhatsApp ${whatsappDisplay}`}
             >
-              <span className="footer-icon" aria-hidden="true">W</span>
+              <span className="footer-icon footer-icon-whatsapp"><WhatsAppIcon /></span>
               <span><small>WhatsApp comercial</small><strong>{whatsappDisplay}</strong></span>
             </a>
             <p>Conte sua ideia, mesmo que ainda não tenha destino ou data definidos.</p>
@@ -291,7 +309,7 @@ export default function Home() {
               rel="noopener noreferrer"
               aria-label="Visitar Instagram da Maflores Tour"
             >
-              <span className="footer-icon" aria-hidden="true">IG</span>
+              <span className="footer-icon footer-icon-instagram"><InstagramIcon /></span>
               <span><small>Instagram</small><strong>@maflorestour</strong></span>
             </a>
             <p>Inspirações, oportunidades e novidades para sua próxima viagem.</p>
