@@ -118,7 +118,7 @@ export default function Home() {
     <main>
       <header className="site-header">
         <a className="brand" href="#inicio" aria-label="Maflores Tour — início">
-          <Image src="/brand/maflores-logo.png" width={326} height={80} priority unoptimized alt="Maflores Tour — Invista em memórias" />
+          <Image src="/brand/maflores-logo.png" width={2048} height={578} priority unoptimized alt="Maflores Tour — Invista em memórias" />
         </a>
         <nav aria-label="Navegação principal">
           <a href="#destinos">Destinos</a>
@@ -245,7 +245,7 @@ export default function Home() {
       </section>
 
       <footer>
-        <Image src="/brand/maflores-logo.png" width={326} height={80} unoptimized alt="Maflores Tour" />
+        <Image src="/brand/maflores-logo.png" width={2048} height={578} unoptimized alt="Maflores Tour" />
         <p>Viagens pensadas para você, cuidadas em cada detalhe.</p>
         <a href="#inicio">Voltar ao topo ↑</a>
         <small>© 2026 Maflores Tour. Todos os direitos reservados.</small>
