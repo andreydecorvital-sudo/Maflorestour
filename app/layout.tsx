@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Maflores Tour | Invista em memórias",
+  title: "Maflores Tour | Viagens personalizadas",
   description:
-    "Viagens nacionais e internacionais personalizadas, com atendimento próximo e humano em cada etapa.",
+    "Roteiros nacionais e internacionais personalizados, com atendimento humano e suporte em cada etapa da sua viagem.",
   other: {
     "codex-preview": "development",
   },
