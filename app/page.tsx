@@ -152,7 +152,7 @@ export default function Home() {
       </header>
 
       <section className="hero" id="inicio">
-        <video className="hero-video desktop-video" autoPlay muted loop playsInline preload="metadata" aria-hidden="true">
+        <video className="hero-video desktop-video" autoPlay muted playsInline preload="metadata" aria-hidden="true">
           <source src="/media/hero-desktop.mp4" type="video/mp4" />
         </video>
         <video className="hero-video mobile-video" autoPlay muted loop playsInline preload="metadata" aria-hidden="true">
