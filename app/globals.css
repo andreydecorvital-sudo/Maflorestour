@@ -39,12 +39,7 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
 .brand img {
   width: clamp(340px, 30vw, 460px);
   height: auto;
-  filter:
-    drop-shadow(1px 0 0 var(--gold))
-    drop-shadow(-1px 0 0 var(--gold))
-    drop-shadow(0 1px 0 var(--gold))
-    drop-shadow(0 -1px 0 var(--gold))
-    drop-shadow(0 5px 12px #00151d85);
+  filter: drop-shadow(0 4px 10px #00151d73);
 }
 nav { display: flex; gap: clamp(24px, 3vw, 48px); }
 nav a { font-size: 14px; opacity: .88; transition: opacity .2s; }
@@ -196,12 +191,7 @@ h2 { font-size: clamp(44px, 5vw, 74px); line-height: 1.02; }
   height: auto;
   background: transparent;
   padding: 0;
-  filter:
-    drop-shadow(1px 0 0 var(--gold))
-    drop-shadow(-1px 0 0 var(--gold))
-    drop-shadow(0 1px 0 var(--gold))
-    drop-shadow(0 -1px 0 var(--gold))
-    drop-shadow(0 5px 14px #0010199c);
+  filter: drop-shadow(0 4px 10px #00101980);
 }
 .footer-brand p {
   max-width: 360px;
