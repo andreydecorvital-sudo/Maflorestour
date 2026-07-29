@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useState } from "react";
 
 const travelerProfiles = [
   {
@@ -34,26 +34,38 @@ const opportunities = [
   {
     place: "Maceió",
     title: "Maceió inesquecível",
+    landmark: "Ponta Verde • Maceió, AL",
     meta: "7 dias",
     includes: "Aéreo + hotel + transfer",
     note: "Praia, descanso e uma base que pode ser adaptada ao seu perfil.",
     accent: "Sol & mar",
+    image: "https://images.unsplash.com/photo-1626794467452-937f5100a9f5?auto=format&fit=crop&w=1600&q=82",
+    imageAlt: "Mar e faixa de areia em Ponta Verde, Maceió",
+    imageSource: "https://unsplash.com/photos/sea-waves-crashing-on-shore-during-sunset--M2wNiEJwvU",
   },
   {
     place: "Buenos Aires",
     title: "Buenos Aires a dois",
+    landmark: "Obelisco • Buenos Aires, Argentina",
     meta: "4 noites",
     includes: "Aéreo + hotel selecionado",
     note: "Gastronomia, cultura e experiências românticas opcionais.",
     accent: "Internacional",
+    image: "https://images.unsplash.com/photo-1745409927264-0db48faf407b?auto=format&fit=crop&w=1600&q=82",
+    imageAlt: "Obelisco de Buenos Aires sob o céu azul",
+    imageSource: "https://unsplash.com/photos/the-obelisco-de-buenos-aires-stands-tall-under-blue-skies-PtX674rCdBs",
   },
   {
     place: "Gramado",
     title: "Gramado em família",
+    landmark: "Lago Negro • Gramado, RS",
     meta: "5 noites",
     includes: "Hotel + roteiro de passeios",
     note: "Dias bem organizados, com tempo livre e atrações para todas as idades.",
     accent: "Serra gaúcha",
+    image: "https://images.unsplash.com/photo-1667401763451-b111aa18fe5e?auto=format&fit=crop&w=1600&q=82",
+    imageAlt: "Pedalinhos em formato de cisne no Lago Negro, em Gramado",
+    imageSource: "https://unsplash.com/photos/a-couple-swans-on-a-boat-purMNATDSes",
   },
 ];
 
@@ -108,54 +120,49 @@ const benefits = [
 
 export default function Home() {
   const [profile, setProfile] = useState("");
-  const [formStep, setFormStep] = useState(1);
+  const [destination, setDestination] = useState("");
   const [sent, setSent] = useState(false);
 
-  const progressLabel = useMemo(() => `${formStep} de 3`, [formStep]);
+  function openWhatsapp(message: string) {
+    window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
+  }
 
   function chooseProfile(value: string) {
     setProfile(value);
     document.querySelector("#planejar")?.scrollIntoView({ behavior: "smooth" });
   }
 
-  function chooseOpportunity(value: string) {
-    setProfile(value);
+  function chooseOpportunity(place: string, title: string) {
+    setProfile(`Roteiro de interesse: ${title}`);
+    setDestination(place);
     document.querySelector("#planejar")?.scrollIntoView({ behavior: "smooth" });
+  }
+
+  function talkAboutOpportunity(title: string) {
+    openWhatsapp([
+      "Olá, Maflores Tour!",
+      `Tenho interesse em ${title} e gostaria de entender as opções.`,
+      "Ainda não tenho todos os detalhes definidos.",
+    ].join("\n"));
   }
 
   function submitTrip(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
-
-    if (formStep < 3) {
-      const fields = formStep === 1
-        ? ["destination", "travelStyle"]
-        : ["date", "travelers", "budget"];
-      const valid = fields.every((name) => {
-        const field = form.elements.namedItem(name) as HTMLInputElement | HTMLSelectElement | null;
-        return field?.reportValidity();
-      });
-      if (valid) setFormStep((step) => step + 1);
-      return;
-    }
-
     const data = new FormData(form);
     const message = [
       "Olá, Maflores Tour! Quero planejar uma viagem.",
       "",
       `Perfil: ${data.get("profile") || "Não informado"}`,
       `Destino/ideia: ${data.get("destination")}`,
-      `Experiência: ${data.get("travelStyle")}`,
-      `Período: ${data.get("date")}`,
-      `Viajantes: ${data.get("travelers")}`,
-      `Faixa de investimento: ${data.get("budget")}`,
-      `Preferência: ${data.get("comfort")}`,
-      `Nome: ${data.get("name")}`,
-      `WhatsApp: ${data.get("phone")}`,
+      `Período: ${data.get("date") || "Ainda não definido"}`,
+      `Viajantes: ${data.get("travelers") || "Ainda não definido"}`,
+      `Faixa de investimento: ${data.get("budget") || "Quero orientação"}`,
+      `Observação: ${data.get("notes") || "Sem observações por enquanto"}`,
     ].join("\n");
 
     setSent(true);
-    window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
+    openWhatsapp(message);
   }
 
   return (
@@ -186,8 +193,8 @@ export default function Home() {
           <h1>Sua próxima viagem começa do seu jeito.</h1>
           <p className="hero-copy">Roteiros personalizados, escolhas cuidadosas e suporte humano em cada etapa.</p>
           <div className="hero-actions">
-            <a className="primary-button" href="#planejar">Quero planejar minha viagem <span>→</span></a>
-            <a className="text-button" href="#oportunidades">Ver destinos <span>↓</span></a>
+            <a className="primary-button" href="#oportunidades">Explorar destinos <span>→</span></a>
+            <a className="text-button" href="#planejar">Planejar em 1 minuto <span>↓</span></a>
           </div>
         </div>
         <div className="trust-strip" aria-label="Diferenciais da Maflores Tour">
@@ -226,18 +233,31 @@ export default function Home() {
         <div className="opportunity-list">
           {opportunities.map((item, index) => (
             <article className="opportunity-card" key={item.place}>
-              <div className="destination-index">0{index + 1}</div>
-              <div>
+              <div className="destination-media">
+                <Image src={item.image} width={1600} height={1100} alt={item.imageAlt} loading="lazy" unoptimized />
+                <div className="destination-media-shade" />
+                <span className="destination-index">0{index + 1}</span>
+                <span className="destination-landmark">{item.landmark}</span>
+              </div>
+              <div className="destination-content">
                 <span className="destination-tag">{item.accent}</span>
                 <h3>{item.title}</h3>
                 <p>{item.note}</p>
+                <div className="package-summary">
+                  <span>{item.meta}</span>
+                  <strong>{item.includes}</strong>
+                  <small>Valor, datas e embarque sob consulta</small>
+                </div>
+                <div className="destination-actions">
+                  <button type="button" onClick={() => chooseOpportunity(item.place, item.title)}>
+                    Personalizar <span>→</span>
+                  </button>
+                  <button className="talk-now" type="button" onClick={() => talkAboutOpportunity(item.title)}>
+                    Falar agora
+                  </button>
+                </div>
+                <a className="photo-credit" href={item.imageSource} target="_blank" rel="noreferrer">Foto do destino ↗</a>
               </div>
-              <div className="package-summary">
-                <span>{item.meta}</span>
-                <strong>{item.includes}</strong>
-                <small>Valor, datas e embarque sob consulta</small>
-              </div>
-              <button type="button" onClick={() => chooseOpportunity(item.title)}>Personalizar este roteiro <span>→</span></button>
             </article>
           ))}
         </div>
@@ -343,82 +363,75 @@ export default function Home() {
 
       <section className="planner" id="planejar">
         <div className="planner-intro">
-          <p className="eyebrow">Sua cotação começa aqui</p>
-          <h2>Conte o essencial. A gente continua no WhatsApp.</h2>
-          <p>São três passos rápidos. No final, suas respostas seguem organizadas para você não precisar repetir tudo.</p>
+          <p className="eyebrow">Comece sem complicação</p>
+          <h2>Um destino e um clique já bastam.</h2>
+          <p>Você pode ir direto para o WhatsApp ou adiantar alguns detalhes. Só o destino é obrigatório — o restante pode ser decidido com a Marcella.</p>
           <div className="contact-note"><span>✓</span> Resposta humana, sem robôs.</div>
+          <button
+            className="instant-whatsapp"
+            type="button"
+            onClick={() => openWhatsapp("Olá, Maflores Tour! Quero ajuda para escolher e planejar minha próxima viagem.")}
+          >
+            Falar agora, sem preencher nada <span>↗</span>
+          </button>
         </div>
 
         <form onSubmit={submitTrip}>
           <input type="hidden" name="profile" value={profile} />
-          <div className="form-progress">
-            <span>Etapa {progressLabel}</span>
-            <div aria-hidden="true"><i style={{ width: `${(formStep / 3) * 100}%` }} /></div>
+          <div className="quick-form-heading">
+            <span>Leva menos de 1 minuto</span>
+            <p className="form-question">Qual viagem está na sua cabeça?</p>
           </div>
 
-          <div className="form-step" hidden={formStep !== 1}>
-              <p className="form-question">O que você imagina para esta viagem?</p>
-              <label>
-                Destino ou ideia
-                <input key={profile} name="destination" required={formStep === 1} defaultValue={profile.includes("inesquecível") || profile.includes("Buenos") || profile.includes("Gramado") ? profile : ""} placeholder="Ex.: praia no Nordeste, lua de mel na Itália..." />
-              </label>
-              <label>
-                Tipo de experiência
-                <select name="travelStyle" required={formStep === 1} defaultValue="">
-                  <option value="" disabled>Selecione o que mais combina</option>
-                  <option>Praia e descanso</option>
-                  <option>Romance ou lua de mel</option>
-                  <option>Família</option>
-                  <option>Grupo e celebração</option>
-                  <option>Aventura e natureza</option>
-                  <option>Gastronomia e cultura</option>
-                  <option>Ainda quero descobrir</option>
-                </select>
-              </label>
+          <div className="destination-chips" aria-label="Sugestões de destino">
+            {["Maceió", "Buenos Aires", "Gramado", "Ainda não sei"].map((item) => (
+              <button
+                key={item}
+                type="button"
+                aria-pressed={destination === item}
+                className={destination === item ? "selected" : ""}
+                onClick={() => setDestination(item)}
+              >
+                {item}
+              </button>
+            ))}
           </div>
 
-          <div className="form-step" hidden={formStep !== 2}>
-              <p className="form-question">Quando, com quem e quanto pretende investir?</p>
-              <div className="form-row">
-                <label>Quando?<input name="date" required={formStep === 2} placeholder="Ex.: janeiro de 2027" /></label>
-                <label>Quantas pessoas?<input name="travelers" required={formStep === 2} placeholder="Ex.: 2 adultos" /></label>
-              </div>
-              <label>
-                Faixa de investimento
-                <select name="budget" required={formStep === 2} defaultValue="">
-                  <option value="" disabled>Selecione uma faixa</option>
-                  <option>Até R$ 5 mil</option>
-                  <option>De R$ 5 mil a R$ 10 mil</option>
-                  <option>De R$ 10 mil a R$ 20 mil</option>
-                  <option>Acima de R$ 20 mil</option>
-                  <option>Ainda não defini</option>
-                </select>
-              </label>
+          <label>
+            Destino ou ideia <span className="required-note">obrigatório</span>
+            <input
+              name="destination"
+              required
+              value={destination}
+              onChange={(event) => setDestination(event.target.value)}
+              placeholder="Ex.: Argentina, praia, lua de mel..."
+            />
+          </label>
+
+          <div className="form-row">
+            <label>Quando? <span className="optional-note">opcional</span><input name="date" placeholder="Ex.: janeiro de 2027" /></label>
+            <label>Quantas pessoas? <span className="optional-note">opcional</span><input name="travelers" placeholder="Ex.: 2 adultos" /></label>
           </div>
 
-          <div className="form-step" hidden={formStep !== 3}>
-              <p className="form-question">Como a Marcella pode falar com você?</p>
-              <label>
-                Preferência de viagem
-                <select name="comfort" required={formStep === 3} defaultValue="">
-                  <option value="" disabled>Escolha uma opção</option>
-                  <option>Economia e praticidade</option>
-                  <option>Conforto e equilíbrio</option>
-                  <option>Exclusividade e experiências especiais</option>
-                </select>
-              </label>
-              <div className="form-row">
-                <label>Seu nome<input name="name" required={formStep === 3} autoComplete="name" placeholder="Como podemos chamar você?" /></label>
-                <label>Seu WhatsApp<input name="phone" required={formStep === 3} autoComplete="tel" inputMode="tel" placeholder="(00) 00000-0000" /></label>
-              </div>
-          </div>
+          <label>
+            Faixa de investimento <span className="optional-note">opcional</span>
+            <select name="budget" defaultValue="">
+              <option value="">Quero orientação</option>
+              <option>Até R$ 5 mil</option>
+              <option>De R$ 5 mil a R$ 10 mil</option>
+              <option>De R$ 10 mil a R$ 20 mil</option>
+              <option>Acima de R$ 20 mil</option>
+            </select>
+          </label>
 
-          <div className="form-actions">
-            {formStep > 1 && <button className="back-button" type="button" onClick={() => setFormStep((step) => step - 1)}>← Voltar</button>}
-            <button className="continue-button" type="submit">
-              {formStep === 3 ? "Continuar no WhatsApp" : "Próxima etapa"} <span>→</span>
-            </button>
-          </div>
+          <label>
+            Algum detalhe importante? <span className="optional-note">opcional</span>
+            <input name="notes" placeholder="Ex.: viagem com criança, comemoração..." />
+          </label>
+
+          <button className="continue-button" type="submit">
+            Enviar ideia pelo WhatsApp <span>→</span>
+          </button>
           {sent && <p className="form-success" role="status">Perfeito! Abrimos o WhatsApp com sua viagem organizada.</p>}
         </form>
       </section>
@@ -440,6 +453,14 @@ export default function Home() {
         <a href="#inicio">Voltar ao topo ↑</a>
         <small>© 2026 Maflores Tour. Todos os direitos reservados.</small>
       </footer>
+
+      <button
+        className="mobile-whatsapp"
+        type="button"
+        onClick={() => openWhatsapp("Olá, Maflores Tour! Quero ajuda para planejar minha próxima viagem.")}
+      >
+        Falar no WhatsApp <span>↗</span>
+      </button>
     </main>
   );
 }
